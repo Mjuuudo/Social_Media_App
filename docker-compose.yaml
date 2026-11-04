@@ -1,12 +1,13 @@
 services:
-  image: postgresql:17
-  container_name: database
-  ports:
-    - 5432:5432
-  env_file:
-    - ./Secrets/.env
-  volumes:
-    - pg_data:/var/lib/postgresql/data
+  database:
+    image: postgres:17
+    container_name: database
+    ports:
+      - 5432:5432
+    env_file:
+      - ./Secrets/.env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 
 
 volumes:
