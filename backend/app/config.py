@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     POSTGRES_USER:str
     POSTGRES_DB: str
     POSTGRES_PASSWORD: str
-    POSTGRES_HOST : str ="localhost"
+    POSTGRES_HOST : str ="database"
     POSTGRES_PORT: int =5432
     
     model_config = SettingsConfigDict(env_file="../Secrets/.env", extra="ignore")
