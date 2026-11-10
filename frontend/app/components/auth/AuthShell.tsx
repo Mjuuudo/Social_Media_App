@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Scene from "../ui/Scene";
 
 type AuthShellProps = {
   children: ReactNode;
@@ -21,7 +22,7 @@ export default function AuthShell({ children }: AuthShellProps) {
 
 function HeroPanel() {
   return (
-    <aside className="relative hidden min-h-[620px] overflow-hidden rounded-[28px] bg-sky p-10 lg:block">
+    <aside className="relative hidden min-h-[820px] overflow-hidden rounded-[28px] bg-sky p-12 lg:block">
       <h2 className="max-w-md text-5xl font-extrabold leading-tight text-ink">
         Share the moments that move you.
       </h2>
@@ -30,17 +31,15 @@ function HeroPanel() {
       </p>
 
       {/* Decorative collage (no data, just shapes) */}
-      <div aria-hidden="true">
-        <div
-          className="absolute bottom-24 left-10 h-60 w-40 -rotate-3 rounded-3xl border-4 border-white shadow-lg"
-          style={{ background: "linear-gradient(180deg, #a9c6dd 0%, #e3b676 70%, #c98a4f 100%)" }}
-        />
-        <div
-          className="absolute bottom-16 left-44 h-64 w-44 rotate-2 rounded-3xl border-4 border-white shadow-lg"
-          style={{ background: "linear-gradient(180deg, #ebbdbd 0%, #a67a8c 60%, #4d3347 100%)" }}
-        />
+      <div aria-hidden="true" className="absolute left-8 top-[330px] h-[460px] w-[480px]">
+        <div className="absolute left-0 top-6 h-[280px] w-[190px] -rotate-6 overflow-hidden rounded-[28px] border-[5px] border-white shadow-lg">
+          <Scene name="desert" />
+        </div>
+        <div className="absolute left-[175px] top-16 h-[310px] w-[210px] rotate-3 overflow-hidden rounded-[28px] border-[5px] border-white shadow-lg">
+          <Scene name="hills" />
+        </div>
 
-        <div className="absolute right-24 top-[45%] grid h-28 w-28 place-items-center rounded-full bg-rose">
+        <div className="absolute left-[335px] top-0 grid h-28 w-28 place-items-center rounded-full bg-[#f2a8b8]">
           <svg viewBox="0 0 24 24" className="h-9 w-9" fill="none" stroke="#0e0e12" strokeWidth="2">
             <path d="M9 18V5l11-2v13" />
             <circle cx="6" cy="18" r="3" />
@@ -48,23 +47,23 @@ function HeroPanel() {
           </svg>
         </div>
 
-        <div className="absolute bottom-24 right-12 grid h-24 w-24 place-items-center rounded-3xl bg-lilac">
+        <div className="absolute left-[365px] top-[290px] grid h-[104px] w-[104px] place-items-center rounded-[28px] bg-lilac">
           <svg viewBox="0 0 24 24" className="h-8 w-8" fill="#0e0e12">
             <path d="M3 19l7-12 4 7 2-3 5 8z" />
           </svg>
         </div>
 
-        <div className="absolute bottom-20 left-8 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-md">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-[#f2b8a2] text-xs font-bold text-ink">
+        <div className="absolute left-6 top-[310px] flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-[#f2b8a2] text-xs font-bold text-ink">
             KB
           </span>
-          <div>
+          <div className="pr-2">
             <p className="text-sm font-bold text-ink">Karim liked your story</p>
             <p className="text-xs text-muted">just now</p>
           </div>
         </div>
 
-        <span className="absolute bottom-10 left-[42%] rounded-full bg-rose px-4 py-1.5 text-sm font-bold text-[#7a1f3d]">
+        <span className="absolute left-[290px] top-[395px] rounded-full bg-rose px-4 py-2 text-sm font-bold text-[#7a1f3d]">
           Woow!!!
         </span>
       </div>

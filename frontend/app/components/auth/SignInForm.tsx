@@ -33,7 +33,7 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
       <Logo />
 
       <h1 className="mt-8 text-4xl font-extrabold text-ink">Welcome back</h1>
-      <p className="mt-2 text-muted">Sign in to see what your people are sharing.</p>
+      <p className="mt-2 text-muted">Sign in to catch up with your people.</p>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
@@ -69,6 +69,17 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
           />
         </div>
 
+        {/* UI only: not connected to anything yet */}
+        <div className="flex items-center justify-between text-sm">
+          <label className="flex cursor-pointer items-center gap-2.5 text-ink">
+            <input type="checkbox" name="remember" defaultChecked className="h-5 w-5 accent-ink" />
+            Remember me
+          </label>
+          <a href="#" className="font-semibold text-link underline">
+            Forgot password?
+          </a>
+        </div>
+
         {error && (
           <p role="alert" className="rounded-2xl bg-rose/25 px-4 py-3 text-sm font-semibold text-[#7a1f3d]">
             {error}
@@ -83,6 +94,18 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
           {isLoading ? "Signing in..." : "Sign in"}
         </button>
       </form>
+
+      <div className="my-5 flex items-center gap-4 text-xs text-muted" aria-hidden="true">
+        <span className="h-px flex-1 bg-[#e6e8ef]" /> or <span className="h-px flex-1 bg-[#e6e8ef]" />
+      </div>
+
+      {/* UI only: not connected to anything yet */}
+      <button
+        type="button"
+        className="h-14 w-full rounded-full border border-ink font-bold text-ink transition hover:bg-field"
+      >
+        Send me a magic link
+      </button>
 
       <p className="mt-6 text-center text-sm text-muted">
         New here?{" "}

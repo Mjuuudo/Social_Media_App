@@ -19,6 +19,10 @@
   --color-lilac: #b8a5f0;
   --color-rose: #f4a6b8;
   --color-cream: #fbf1d9;
+  --color-blush: #fde5eb;
+  --color-mist: #ece8fb;
+  --color-online: #3aa877;
+  --color-alert: #e5476d;
 }
 
 @media (prefers-color-scheme: dark) {
