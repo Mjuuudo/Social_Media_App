@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_HOST : str ="database"
     POSTGRES_PORT: int =5432
+    JWT_SECRET: str
+    ACCESS_TOKEN_MINUTES: int = 60
     
     model_config = SettingsConfigDict(env_file="../Secrets/.env", extra="ignore")
     
