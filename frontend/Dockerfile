@@ -1,15 +1,16 @@
-FROM python:3.14-slim
-COPY --from=ghcr.io/astral-sh/uv:0.13 /uv /bin/uv
+FROM node:22
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
 WORKDIR /app
 
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-install-project
-ENV PATH="/app/.venv/bin:$PATH"
+# Use the built-in "node" user (uid/gid 1000 = your WSL user) and make sure
+# /app, node_modules and .next exist and are owned by it, so the anonymous
+# volumes in docker-compose inherit that ownership.
+RUN mkdir -p /app/node_modules /app/.next && chown -R node:node /app
+USER node
 
-COPY . .
+COPY --chown=node:node package*.json ./
+RUN npm install
 
-EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+COPY --chown=node:node . .
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
