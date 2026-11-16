@@ -3,30 +3,17 @@ name = "backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
+authors = [
+    { name = "abait-ou", email = "abdelmajid.aitouaziz@gmail.com" }
+]
 requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.20.1",
     "argon2-cffi>=25.1.0",
     "asyncpg>=0.32.0",
-    "fastapi[standard]>=0.162.0",
-    "pydantic-settings>=2.16.2",
-    "pyjwt>=2.15.1",
+    "fastapi[standard]>=0.162.5",
+    "pydantic>=2.14.3",
     "sqlalchemy[asyncio]>=2.1.8",
 ]
 
-[project.scripts]
-backend = "backend:main"
 
-[build-system]
-requires = ["uv_build>=0.13.7,<0.14.0"]
-build-backend = "uv_build"
-
-[dependency-groups]
-dev = [
-    "httpx>=0.28.1",
-    "pytest>=9.2.0",
-    "pytest-asyncio>=1.4.1.post1",
-]
-[tool.pytest.ini_options]
-pythonpath=["."]
-asyncio_mode= "auto"
