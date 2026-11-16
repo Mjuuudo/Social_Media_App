@@ -6,6 +6,8 @@ class Settings ( BaseSettings ):
     postgres_password: str
     postgres_port: int = 5432
     postgres_db: str = "postgresDB"
+    jwt_secret: str
+    access_token_minutes: int = 15
 
 
     @property

@@ -23,4 +23,10 @@ class UserModel ( BaseModel ) :
     last_name: str
     email: EmailStr
     joined_at: datetime
+
+class loginModel ( BaseModel ) :
+    email: EmailStr
+    password: str
+
+
     
