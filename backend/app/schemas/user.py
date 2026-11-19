@@ -16,6 +16,18 @@ class RegisterResponse ( BaseModel ):
     username: str
     email: EmailStr
 
+class UserResponse ( BaseModel ) :
+    model_config = ConfigDict( from_attributes = True)
+
+    id: int
+    username: str
+    first_name: str
+    last_name: str
+    email: EmailStr
+    joined_at: datetime
+
+
+
 class UserModel ( BaseModel ) :
     id: int
     username: str

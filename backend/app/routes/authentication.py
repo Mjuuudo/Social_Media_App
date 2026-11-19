@@ -1,13 +1,15 @@
 from fastapi import APIRouter , Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.user import RegisterRequest, RegisterResponse, loginModel
+from app.schemas.user import RegisterRequest, RegisterResponse, loginModel, UserResponse
 from app.core.database import get_session
 
 from app.services.authentication import register_client, login_client
 from app.core.security import create_access_token
 from app.core.config import settings
 from app.repository.user import get_all 
+from app.models.user import UserModel
+from app.dependencies import get_current_user
 
 
 router = APIRouter( tags=['Authentication'])
@@ -41,9 +43,14 @@ async def signin (
     )
     return user
 
-@router.get('/all', status_code = 200 )
+@router.get('/all', status_code = 200, response_model = list[UserResponse])
 async def list_all(
     session: AsyncSession = Depends(get_session)
  ) :
     return await get_all( session )
 
+@router.get('/me', status_code = 200, response_model = UserResponse )
+async def list_me( 
+    user: UserModel = Depends(get_current_user)
+) :
+    return user
