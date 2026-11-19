@@ -7,11 +7,12 @@ from app.core.database import get_session
 from app.services.authentication import register_client, login_client
 from app.core.security import create_access_token
 from app.core.config import settings
+from app.repository.user import get_all 
 
 
 router = APIRouter( tags=['Authentication'])
 
-@router.post('/signup', status_code = 201 )
+@router.post( '/signup', status_code = 201 )
 async def signup( 
     data: RegisterRequest,
     session: AsyncSession = Depends(get_session)
@@ -39,4 +40,10 @@ async def signin (
         max_age =  settings.access_token_minutes * 60
     )
     return user
+
+@router.get('/all', status_code = 200 )
+async def list_all(
+    session: AsyncSession = Depends(get_session)
+ ) :
+    return await get_all( session )
 

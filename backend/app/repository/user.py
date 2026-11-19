@@ -20,6 +20,11 @@ async def get_by_id ( session: AsyncSession, id: int ) -> UserModel :
     result = await session.execute( query )
     return result.scalar_one_or_none()
 
+async def get_all( session: AsyncSession ) :
+    query = select(UserModel)
+    result = await session.execute( query )
+    return result.scalars().all()
+
 async def save_user(session: AsyncSession, user: UserModel) -> UserModel :
     session.add(user)
     await session.commit()

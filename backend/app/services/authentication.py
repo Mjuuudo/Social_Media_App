@@ -1,7 +1,7 @@
 from app.schemas.user import RegisterRequest, loginModel
-from app.core.security import hashPassword, verify_password
+from app.core.security import hashPassword, verify_password, decode_access_token
 from app.models.user import UserModel
-from app.repository.user import save_user, get_by_email, get_by_username
+from app.repository.user import save_user, get_by_email, get_by_username, get_by_id
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -45,6 +45,19 @@ async def login_client( data: loginModel ,
         raise HTTPException( status_code = 401, detail='Credentials Are Not Correct')
 
     return user
+
+
+async def get_current_user ( session: AsyncSession ,access_token: str ) :
+    user_id = decode_access_token(access_token)
+    if not user_id :
+        raise HTTPException(status_code=401, detail="Invalide Token Provided")
+    user = await get_by_id(session, user_id)
+
+    if not user :
+        raise HTTPException(status_code=401, detail="Not Authenticated")
+    return user
     
+
+
 
     
