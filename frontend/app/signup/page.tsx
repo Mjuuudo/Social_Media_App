@@ -13,6 +13,40 @@ export default function SignUpPage() {
   const router = useRouter();
 
   async function handleSignUp(data: SignUpData) {
+    setError("");
+    setLoading(true);
+    try{
+      const response= await fetch(`${API_URL}/api/auth/signup`,{
+        method:"POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+        })
+      if(response.status===201){
+        router.push("/signin");
+        return;
+
+      }
+
+      if(response.status===409){
+        const body= await response.json();
+        setError(body.detail);
+        return;
+      }
+      if(response.status===422){
+        const body= await response.json();
+        if(Array.isArray(body.detail)){
+          setError(body.detail[0]?.msg ?? "Please check your email");
+          return;
+
+        }
+
+      }
+      setError("registration failed!")
+    }catch{
+      setError("could not connect!")
+    }finally{
+      setLoading(false)
+    }
     // `data` already matches the backend's RegisterRequest:
     //   { username, first_name, last_name, email, password }
 
@@ -41,9 +75,9 @@ export default function SignUpPage() {
 
     // STEP 6: finally → turn the loading flag off
 
-    void data; // remove this line once you use `data`
+    // void data; // remove this line once you use `data`
   }
-
+  
   return (
     <AuthShell>
       <SignUpForm onSubmit={handleSignUp} error={error} isLoading={loading} />

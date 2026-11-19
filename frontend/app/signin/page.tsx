@@ -22,7 +22,7 @@ export default function SignInPage() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}/api/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Required so the browser stores the httpOnly cookie the backend sets
@@ -40,6 +40,8 @@ export default function SignInPage() {
         return;
       }
       if (response.status === 422) {
+        console.log(data.email)
+        console.log(data.password)
         setError("Please fill in both fields");
         return;
       }

@@ -10,7 +10,7 @@ from app.core.config import settings
 from app.repository.user import get_all 
 
 
-router = APIRouter( tags=['Authentication'])
+router = APIRouter( tags=['Authentication'] )
 
 @router.post( '/signup', status_code = 201 )
 async def signup( 
@@ -22,12 +22,13 @@ async def signup(
     return user
 
 
-@router.post( '/signin', status_code = 200, response_model=RegisterResponse )
+@router.post( '/signin', status_code = 200 )
 async def signin (
     data: loginModel,
     response: Response,
     session: AsyncSession = Depends(get_session)    ) :
 
+    print(data)
     user = await login_client(data, session)
     token = create_access_token(user.id)
 

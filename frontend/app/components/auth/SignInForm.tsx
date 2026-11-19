@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 export type SignInData = {
   // Username or email
-  login: string;
+  email:string ;
   password: string;
 };
 
@@ -20,12 +20,13 @@ const inputClass =
   "h-14 w-full rounded-2xl bg-field px-5 text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-lilac";
 
 export default function SignInForm({ onSubmit, error, isLoading = false }: SignInFormProps) {
-  const [login, setLogin] = useState("");
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    onSubmit({ login: login.trim(), password });
+    console.log(`this is the email ${email}`)
+    onSubmit({  email , password });
   }
 
   return (
@@ -37,18 +38,18 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
-          <label htmlFor="login" className="mb-2 block text-sm font-bold text-ink">
+          <label htmlFor="email" className="mb-2 block text-sm font-bold text-ink">
             Username or email
           </label>
           <input
-            id="login"
+            id="email"
             type="text"
             autoComplete="username"
             placeholder="yasmine.a or you@example.com"
             required
             maxLength={50}
-            value={login}
-            onChange={(e) => setLogin(e.target.value)}
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
             className={inputClass}
           />
         </div>
