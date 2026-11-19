@@ -13,3 +13,7 @@ class UserModel ( Base ) :
         email:Mapped[str] = mapped_column(String(255), unique=True)
         password_hash:Mapped[str] 
         joined_at:Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default= func.now())
+        # about:Mapped[str]
+        # city:Mapped[str]
+        
+        

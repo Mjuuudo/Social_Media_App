@@ -1,12 +1,48 @@
+"use client";
 import { PersonAvatar } from "../../components/ui/Avatar";
 import Icon from "../../components/ui/Icon";
 import Scene from "../../components/ui/Scene";
 import { Button, NotificationBell, Segmented, SectionTitle } from "../../components/ui/Controls";
-import { people, profile, tints } from "../../lib/mock";
+import { me, people, profile, tints } from "../../lib/mock";
+import {useEffect , useState } from 'react';
+import {useRouter} from "next/navigation";
 
+const API_URL=process.env.NEXT_PUBLIC_API_URL ??"http://localhost:8000";
+
+type User = { id: number; username : string ; first_name : string ; last_name: string ; email: string; joined_at: string;}
 export default function ProfilePage() {
   const { person } = profile;
+  const router=useRouter();
+  const [user,setUser]=useState("");
+  const [loading,setLoading]=useState(true);
+
+  useEffect(()=>{
+    async function load() {
+      try{
+        const response = await fetch(`${API_URL}/api/auth/me`,{credentials:"include",});
+        if(response.status===401){
+          router.replace("/signin");
+          return;
+        }
+        if(response.ok){
+          const data = await response.json();
+          // console.log(data);
+          setUser(data)
+
+        }
+
+      }catch{
+
+      }finally{
+        setLoading(false);
+      }
+
+
+    }
+    load();
+  },[router])
   return (
+      
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px]">
       <div className="min-w-0">
         {/* Cover + avatar */}
@@ -18,16 +54,31 @@ export default function ProfilePage() {
             <NotificationBell />
           </div>
           <PersonAvatar
-            person={person}
-            size="xl"
-            className="absolute -bottom-14 left-5 h-28 w-28 border-[6px] border-white text-3xl sm:left-8 sm:h-36 sm:w-36 sm:text-5xl"
-          />
+              person={{
+              initials: `${user?.first_name?.[0] ?? ""}${user?.last_name?.[0] ?? ""}`.toUpperCase() || "?   ",
+               color: "#f4cd6b",
+               }}
+               size="xl"
+               className="absolute -bottom-14 left-5 h-28 w-28 border-[6px] border-white text-3xl sm:left-8 sm:h-36 sm:w-36 sm:text-5xl"
+                />
         </div>
 
         <div className="mt-16 flex flex-wrap items-end justify-between gap-4 sm:mt-4 sm:pl-48">
           <div>
-            <h1 className="text-3xl font-extrabold text-ink">{person.name}</h1>
-            <p className="text-sm text-muted">@{person.username} · {person.city}</p>
+            {loading ? (
+  <p>Loading profile...</p>
+) : user ? (
+  <>
+    <h1 className="text-3xl font-extrabold text-ink">
+      {user.first_name} {user.last_name}
+    </h1>
+    <p className="text-sm text-muted">
+      @{user.username}
+    </p>
+  </>
+) : (
+  <p>Unable to load profile.</p>
+)}
           </div>
           <div className="flex gap-3">
             <Button className="px-8">Follow</Button>
