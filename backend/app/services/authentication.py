@@ -33,8 +33,9 @@ async def register_client(
     return await save_user(session, new_user)
 
 
-async def login_client( data: loginModel ,
-                        session: AsyncSession
+async def login_client( 
+        data: loginModel ,
+        session: AsyncSession
                         ):
     user = await get_by_email(session, data.email)
 
