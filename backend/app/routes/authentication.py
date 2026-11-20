@@ -57,4 +57,4 @@ async def list_me(
     return user
 
 
-
+# response.delete_cookie(key="access_token", httponly=True, samesite="lax", secure=False)
