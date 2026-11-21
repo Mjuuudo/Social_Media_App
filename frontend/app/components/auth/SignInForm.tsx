@@ -6,27 +6,25 @@ import Logo from "./Logo";
 
 export type SignInData = {
   // Username or email
-  email:string ;
+  identifier: string;
   password: string;
 };
 
 type SignInFormProps = {
   onSubmit: (data: SignInData) => void | Promise<void>;
-  error?: string;
   isLoading?: boolean;
 };
 
 const inputClass =
   "h-14 w-full rounded-2xl bg-field px-5 text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-lilac";
 
-export default function SignInForm({ onSubmit, error, isLoading = false }: SignInFormProps) {
-  const [email, setemail] = useState("");
+export default function SignInForm({ onSubmit, isLoading = false }: SignInFormProps) {
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(`this is the email ${email}`)
-    onSubmit({  email , password });
+    onSubmit({ identifier, password });
   }
 
   return (
@@ -38,18 +36,20 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
-          <label htmlFor="email" className="mb-2 block text-sm font-bold text-ink">
+          <label htmlFor="identifier" className="mb-2 block text-sm font-bold text-ink">
             Username or email
           </label>
           <input
-            id="email"
+            id="identifier"
             type="text"
             autoComplete="username"
+            autoCapitalize="none"
+            spellCheck={false}
             placeholder="yasmine.a or you@example.com"
             required
-            maxLength={50}
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
+            maxLength={255}
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
             className={inputClass}
           />
         </div>
@@ -80,12 +80,6 @@ export default function SignInForm({ onSubmit, error, isLoading = false }: SignI
             Forgot password?
           </a>
         </div>
-
-        {error && (
-          <p role="alert" className="rounded-2xl bg-rose/25 px-4 py-3 text-sm font-semibold text-[#7a1f3d]">
-            {error}
-          </p>
-        )}
 
         <button
           type="submit"

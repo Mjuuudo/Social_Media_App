@@ -4,13 +4,14 @@ from app.core.database import get_session
 from app.core.security import decode_access_token
 from app.repository.user import get_by_id
 from app.models.user import UserModel
+from app.schemas.user import loggedInUser
 
 
 
 async def get_current_user ( 
         access_token: str | None = Cookie(default=None),
         session: AsyncSession = Depends(get_session)
-) -> UserModel:
+) -> loggedInUser:
     if access_token is None :
         raise HTTPException(status_code=401, detail='Token Not Provided')
 

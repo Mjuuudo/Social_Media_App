@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import AuthShell from "../components/auth/AuthShell";
 import SignInForm, { type SignInData } from "../components/auth/SignInForm";
 
@@ -15,11 +16,9 @@ function readDetail(body: unknown): string | null {
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
 
   async function handleSignIn(data: SignInData) {
-    setError("");
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/auth/signin`, {
@@ -36,18 +35,16 @@ export default function SignInPage() {
       }
       if (response.status === 401) {
         const body: unknown = await response.json().catch(() => null);
-        setError(readDetail(body) ?? "Invalid username/email or password");
+        toast.error(readDetail(body) ?? "Invalid username/email or password");
         return;
       }
       if (response.status === 422) {
-        console.log(data.email)
-        console.log(data.password)
-        setError("Please fill in both fields");
+        toast.error("Please fill in both fields");
         return;
       }
-      setError("Sign in failed, please try again");
+      toast.error("Sign in failed, please try again");
     } catch {
-      setError("Could not connect, please try again");
+      toast.error("Could not connect, please try again");
     } finally {
       setLoading(false);
     }
@@ -55,7 +52,7 @@ export default function SignInPage() {
 
   return (
     <AuthShell>
-      <SignInForm onSubmit={handleSignIn} error={error} isLoading={loading} />
+      <SignInForm onSubmit={handleSignIn} isLoading={loading} />
     </AuthShell>
   );
 

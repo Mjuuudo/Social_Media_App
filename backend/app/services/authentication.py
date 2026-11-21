@@ -32,20 +32,32 @@ async def register_client(
 
     return await save_user(session, new_user)
 
+async def login_with_email ( data: loginModel, session: AsyncSession ) :
+    user = await get_by_email(session, data.identifier)
+    
+    if not user :
+        raise HTTPException( status_code=401, detail='User Not Found In Our records')
+    
+    if not verify_password( data.password, user.password_hash) :
+        raise HTTPException( status_code = 401, detail='Credentials Are Not Correct')
+    
+    return user
 
-async def login_client( 
+async def login_with_username( 
         data: loginModel ,
         session: AsyncSession
                         ):
-    user = await get_by_email(session, data.email)
+    user = await get_by_username( session, data.identifier )
 
     if not user :
         raise HTTPException( status_code=401, detail='User Not Found In Our records')
 
-    if not verify_password(user.password_hash, data.password) :
+    if not verify_password( data.password, user.password_hash ) :
         raise HTTPException( status_code = 401, detail='Credentials Are Not Correct')
 
     return user
+
+
 
 
 async def get_current_user ( session: AsyncSession ,access_token: str ) :
