@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 // Mirrors the backend's RegisterRequest (backend/app/schemas/user.py).
 // Keys are snake_case so the object can be sent to the API as-is.
-export type SignUpData = {
+export type registerData = {
   username: string;
   first_name: string;
   last_name: string;
@@ -14,10 +14,10 @@ export type SignUpData = {
   password: string;
 };
 
-type SignUpFormProps = {
+type registerFormProps = {
   // Called with the typed values when the form is submitted.
   // The parent decides what happens (the API call is your logic).
-  onSubmit: (data: SignUpData) => void | Promise<void>;
+  onSubmit: (data: registerData) => void | Promise<void>;
   // A message to show above the button, e.g. the backend's 409 text.
   error?: string;
   // Disables the button while the request is running.
@@ -30,7 +30,7 @@ const inputClass =
 const labelClass = "mb-2 block text-sm font-bold text-ink";
 const hintClass = "mt-1.5 text-xs text-muted";
 
-export default function SignUpForm({ onSubmit, error, isLoading = false }: SignUpFormProps) {
+export default function registerForm({ onSubmit, error, isLoading = false }: registerFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -169,7 +169,7 @@ export default function SignUpForm({ onSubmit, error, isLoading = false }: SignU
 
       <p className="mt-6 text-center text-sm text-muted">
         Already have an account?{" "}
-        <Link href="/signin" className="font-bold text-link underline">
+        <Link href="/login" className="font-bold text-link underline">
           Sign in
         </Link>
       </p>

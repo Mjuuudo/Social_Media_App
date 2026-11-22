@@ -14,8 +14,21 @@ dependencies = [
     "fastapi[standard]>=0.162.5",
     "mako>=1.4.3",
     "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
     "pyjwt>=2.15.1",
     "sqlalchemy[asyncio]>=2.1.8",
 ]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+testpaths = ["tests"]
 
 

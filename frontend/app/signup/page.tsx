@@ -1,28 +1,28 @@
 "use client";
 
 import AuthShell from "../components/auth/AuthShell";
-import SignUpForm, { type SignUpData } from "../components/auth/SignUpForm";
+import registerForm, { type registerData } from "../components/auth/registerForm";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
-export default function SignUpPage() {
+export default function registerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
-  async function handleSignUp(data: SignUpData) {
+  async function handleregister(data: registerData) {
     setError("");
     setLoading(true);
     try{
-      const response= await fetch(`${API_URL}/api/auth/signup`,{
+      const response= await fetch(`${API_URL}/api/auth/register`,{
         method:"POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify(data)
         })
       if(response.status===201){
-        router.push("/signin");
+        router.push("/login");
         return;
 
       }
@@ -55,13 +55,13 @@ export default function SignUpPage() {
     //   - turn the loading flag on (disables the button)
 
     // STEP 2: Send the request (wrap steps 2–4 in try / catch / finally)
-    //   - endpoint: POST `${API_URL}/api/auth/signup`
+    //   - endpoint: POST `${API_URL}/api/auth/register`
     //     (router is mounted with prefix "/api/auth" in backend/app/main.py)
     //   - header:   "Content-Type": "application/json"
     //   - body:     JSON.stringify(data)
 
     // STEP 3: Handle success
-    //   - status 201 → account created → redirect to "/signin"
+    //   - status 201 → account created → redirect to "/login"
 
     // STEP 4: Handle the backend errors
     //   - 409 → username or email already taken.
@@ -80,7 +80,7 @@ export default function SignUpPage() {
   
   return (
     <AuthShell>
-      <SignUpForm onSubmit={handleSignUp} error={error} isLoading={loading} />
+      <registerForm onSubmit={handleregister} error={error} isLoading={loading} />
     </AuthShell>
   );
 }

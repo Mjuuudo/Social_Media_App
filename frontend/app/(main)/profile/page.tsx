@@ -21,7 +21,7 @@ export default function ProfilePage() {
       try{
         const response = await fetch(`${API_URL}/api/auth/me`,{credentials:"include",});
         if(response.status===401){
-          router.replace("/signin");
+          router.replace("/login");
           return;
         }
         if(response.ok){

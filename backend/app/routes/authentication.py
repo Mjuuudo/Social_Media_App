@@ -14,8 +14,8 @@ from app.dependencies import get_current_user
 
 router = APIRouter( tags=['Authentication'] )
 
-@router.post( '/signup', status_code = 201, response_model= RegisterResponse )
-async def signup( 
+@router.post( '/register', status_code = 201, response_model= RegisterResponse )
+async def register( 
     data: RegisterRequest,
     session: AsyncSession = Depends(get_session)
 ) :
@@ -24,8 +24,8 @@ async def signup(
     return user
 
 
-@router.post( '/signin', status_code = 200, response_model= loginResponse )
-async def signin (
+@router.post( '/login', status_code = 200, response_model= loginResponse )
+async def login (
     data: loginModel,
     response: Response,
     session: AsyncSession = Depends(get_session)   
@@ -62,7 +62,7 @@ async def logout (
 
 
 
-@router.get('/all', status_code = 200, response_model = list[loggedInUser])
+@router.get('/users', status_code = 200, response_model = list[loggedInUser])
 async def list_all(
     session: AsyncSession = Depends(get_session)
  ) :

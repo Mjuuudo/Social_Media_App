@@ -4,21 +4,21 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import Logo from "./Logo";
 
-export type SignInData = {
+export type loginData = {
   // Username or email
   identifier: string;
   password: string;
 };
 
-type SignInFormProps = {
-  onSubmit: (data: SignInData) => void | Promise<void>;
+type loginFormProps = {
+  onSubmit: (data: loginData) => void | Promise<void>;
   isLoading?: boolean;
 };
 
 const inputClass =
   "h-14 w-full rounded-2xl bg-field px-5 text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-lilac";
 
-export default function SignInForm({ onSubmit, isLoading = false }: SignInFormProps) {
+export default function loginForm({ onSubmit, isLoading = false }: loginFormProps) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
@@ -86,7 +86,7 @@ export default function SignInForm({ onSubmit, isLoading = false }: SignInFormPr
           disabled={isLoading}
           className="h-14 w-full rounded-full bg-ink font-bold text-white transition hover:bg-ink/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading ? "Signing in..." : "Sign in"}
+          {isLoading ? "loging in..." : "Sign in"}
         </button>
       </form>
 
@@ -104,7 +104,7 @@ export default function SignInForm({ onSubmit, isLoading = false }: SignInFormPr
 
       <p className="mt-6 text-center text-sm text-muted">
         New here?{" "}
-        <Link href="/signup" className="font-bold text-link underline">
+        <Link href="/register" className="font-bold text-link underline">
           Create an account
         </Link>
       </p>

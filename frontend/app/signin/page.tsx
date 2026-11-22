@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import AuthShell from "../components/auth/AuthShell";
-import SignInForm, { type SignInData } from "../components/auth/SignInForm";
+import loginForm, { type loginData } from "../components/auth/loginForm";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -14,14 +14,14 @@ function readDetail(body: unknown): string | null {
     : null;
 }
 
-export default function SignInPage() {
+export default function loginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  async function handleSignIn(data: SignInData) {
+  async function handlelogin(data: loginData) {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/api/auth/signin`, {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Required so the browser stores the httpOnly cookie the backend sets
@@ -52,7 +52,7 @@ export default function SignInPage() {
 
   return (
     <AuthShell>
-      <SignInForm onSubmit={handleSignIn} isLoading={loading} />
+      <loginForm onSubmit={handlelogin} isLoading={loading} />
     </AuthShell>
   );
 
