@@ -5,6 +5,11 @@ from app.main import app
 
 async def test_login_works():
     transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.get("/")
+    
+    assert response.status_code == 200
+    assert response.json() == {"hello": "world"}
     # async with AsyncClient(transport=transport, base_url="http://test") as client:
     #     response = await client.post(
     #         "/api/auth/login", json={"identifier": "abait-ou", "password": "lezaraki/0"}
