@@ -8,6 +8,7 @@ class Settings ( BaseSettings ):
     postgres_db: str = "postgresDB"
     jwt_secret: str
     access_token_minutes: int = 15
+    front_url: str = "http://localhost:3000"
 
 
     @property

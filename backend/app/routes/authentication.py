@@ -54,6 +54,7 @@ async def list_all(
 async def list_me( 
     user: UserModel = Depends(get_current_user)
 ) :
+    print("Woooooorking !!!!")
     return user
 
 
