@@ -24,11 +24,22 @@ dev = [
     "httpx>=0.28.1",
     "pytest>=9.2.0",
     "pytest-asyncio>=1.5.0",
+    "ruff>=0.17.6",
 ]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Cookie", "fastapi.Query", "fastapi.Header", "fastapi.Path", "fastapi.Body"]
 
 
