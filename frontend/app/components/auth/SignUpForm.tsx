@@ -13,6 +13,8 @@ export type SignUpData = {
   email: string;
   password: string;
 };
+const textareaClass =
+  "min-h-28 w-full resize-none rounded-2xl bg-field px-5 py-4 text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-lilac";
 
 type SignUpFormProps = {
   // Called with the typed values when the form is submitted.
@@ -132,6 +134,16 @@ export default function SignUpForm({ onSubmit, error, isLoading = false }: SignU
             className={inputClass}
           />
         </div>
+        {/* Optional profile details */}
+        <div className="pt-2">
+      <p className="mt-1 text-sm text-muted">You can fill these in now or edit them later.</p>
+    </div>
+
+   
+
+    
+
+     
 
         <div>
           <label htmlFor="password" className={labelClass}>

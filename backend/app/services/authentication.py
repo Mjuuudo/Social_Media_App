@@ -27,7 +27,13 @@ async def register_client(
         first_name = data.first_name,
         last_name = data.last_name,
         email = data.email,
-        password_hash = hashed_password,  
+        password_hash = hashed_password,
+        # avarat_url =data.avatar_url,
+        # headline = data.headline,
+        # cover_url = data.cover_url,
+        # location = data.location,
+        # bio = data.bio
+         
     )
 
     return await save_user(session, new_user)

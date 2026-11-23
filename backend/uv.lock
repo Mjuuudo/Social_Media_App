@@ -170,6 +170,7 @@ dependencies = [
     { name = "mako" },
     { name = "pydantic" },
     { name = "pyjwt" },
+    { name = "python-multipart" },
     { name = "sqlalchemy", extra = ["asyncio"] },
 ]
 
@@ -182,6 +183,7 @@ requires-dist = [
     { name = "mako", specifier = ">=1.4.3" },
     { name = "pydantic", specifier = ">=2.14.3" },
     { name = "pyjwt", specifier = ">=2.15.1" },
+    { name = "python-multipart" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.8" },
 ]
 

@@ -25,6 +25,7 @@ class UserResponse ( BaseModel ) :
     last_name: str
     email: EmailStr
     joined_at: datetime
+   
 
 
 
@@ -35,10 +36,24 @@ class UserModel ( BaseModel ) :
     last_name: str
     email: EmailStr
     joined_at: datetime
+    bio:str = Field(max_length=500)
+    avatar:str = Field(min_length=10,max_length=500)
+    cover: str = Field(min_length=10,max_length=500)
+    location: str = Field(min_length=10,max_length=500)
+    headline:str = Field(min_length=10,max_length=500)
 
 class loginModel ( BaseModel ) :
     email: EmailStr
     password: str
 
+class UserUpdate(BaseModel):
+    first_name: str | None = Field(default=None, max_length=100)
+    last_name: str | None = Field(default=None, max_length=100)
+    username: str | None = Field(default=None, max_length=100)
+    headline: str | None = Field(default=None, max_length=100)
+    bio: str | None = Field(default=None, max_length=500)
+    location: str | None = Field(default=None, max_length=100)
+    avatar: str | None = Field(default=None, max_length=500)
+    cover: str | None = Field(default=None, max_length=500)
 
     

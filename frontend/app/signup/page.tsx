@@ -79,8 +79,13 @@ export default function SignUpPage() {
   }
   
   return (
-    <AuthShell>
-      <SignUpForm onSubmit={handleSignUp} error={error} isLoading={loading} />
-    </AuthShell>
+
+<AuthShell>
+  <SignUpForm
+    onSubmit={handleSignUp}
+    error={error}
+    isLoading={loading}
+  />
+</AuthShell>
   );
 }
