@@ -26,20 +26,13 @@ class UserModel(Base):
     avatar_key: Mapped[str | None] = mapped_column(String(500))
     cover_key: Mapped[str | None] = mapped_column(String(500))
 
-
     # ── Settings ─────────────────────────────────────────────
     is_private: Mapped[bool] = mapped_column(server_default=false())
 
     # ── Timestamps ───────────────────────────────────────────
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    last_seen_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True) 
-    )
-        
-        
+    last_seen_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
