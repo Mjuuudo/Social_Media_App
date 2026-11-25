@@ -1,14 +1,8 @@
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import String, func, DateTime
-from datetime import datetime
 from app.models.base import Base
-
 from datetime import datetime
-
 from sqlalchemy import DateTime, String, Text, false, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column,relationship
 
-from app.models.base import Base
 
 
 class UserModel(Base):
@@ -39,5 +33,8 @@ class UserModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
+    posts=relationship("PostsModel",back_populates="user",cascade="all,delete-orphan")
         
-        
+
+
+
