@@ -4,6 +4,7 @@ type AvatarProps = {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   status?: "online" | "offline";
   className?: string;
+  imageUrl?: string | null;
 };
 
 const sizes = {
@@ -47,16 +48,16 @@ export function PersonAvatar({
   );
 }
 
-export default function Avatar({ initials, color, size = "md", status, className = "" }: AvatarProps) {
+export default function Avatar({ initials, color, size = "md", status, className = "" ,imageUrl}: AvatarProps) {
   return (
     <span
-      className={`${className.includes("absolute") ? "" : "relative"} inline-grid shrink-0 place-items-center rounded-full font-extrabold ${sizes[size]} ${className}`}
+      className={`${className.includes("absolute") ? "" : "relative"} inline-grid shrink-0 place-items-center overflow-hidden rounded-full font-extrabold ${sizes[size]} ${className}`}
       style={{ background: color, color: isDark(color) ? "#fff" : "#0e0e12" }}
     >
-      {initials}
+      {imageUrl ? <img src={imageUrl} alt="" className="___" /> : initials}
       {status && (
         <span
-          className={`absolute bottom-0 right-0 rounded-full border-2 border-white ${dotSizes[size]} ${
+          className={`absolute bottom-0 right-0 rounded-full  border-2 border-white ${dotSizes[size]} ${
             status === "online" ? "bg-online" : "bg-[#c4c7d2]"
           }`}
         >

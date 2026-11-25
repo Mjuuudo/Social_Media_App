@@ -1,0 +1,1 @@
+{"timestamp":"2026-11-25T00:40:34.240825575Z","level":"WARN","message":"IAM user identity expired and was removed","name":"Y3NC***QBWO","user_type":"Sts","target":"rustfs_iam::store::object","filename":"crates/iam/src/store/object.rs","line_number":638,"threadName":"rustfs-worker","threadId":"ThreadId(22)"}

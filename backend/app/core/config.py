@@ -9,6 +9,11 @@ class Settings ( BaseSettings ):
     jwt_secret: str
     access_token_minutes: int = 15
     front_url: str = "http://localhost:3000"
+    s3_endpoint: str
+    s3_access_key: str
+    s3_secret_key: str
+    s3_bucket: str
+    s3_public_url: str
 
 
     @property

@@ -16,7 +16,8 @@ dependencies = [
     "pydantic>=2.14.3",
     "pyjwt>=2.15.1",
     "sqlalchemy[asyncio]>=2.1.8",
-    "python-multipart"
+    "python-multipart",
+    "boto3>=1.44.10",
 ]
 
 
