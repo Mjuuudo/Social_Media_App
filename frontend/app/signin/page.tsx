@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import AuthShell from "../components/auth/AuthShell";
-import loginForm, { type loginData } from "../components/auth/loginForm";
+import LoginForm, { type LoginData } from "../components/auth/LoginForm";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -14,11 +14,11 @@ function readDetail(body: unknown): string | null {
     : null;
 }
 
-export default function loginPage() {
+export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  async function handlelogin(data: loginData) {
+  async function handleLogin(data: LoginData) {
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
@@ -52,7 +52,7 @@ export default function loginPage() {
 
   return (
     <AuthShell>
-      <loginForm onSubmit={handlelogin} isLoading={loading} />
+      <LoginForm onSubmit={handleLogin} isLoading={loading} />
     </AuthShell>
   );
 

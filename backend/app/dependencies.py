@@ -10,6 +10,24 @@ from app.schemas.user import loggedInUser
 async def get_current_user(
     access_token: str | None = Cookie(default=None), session: AsyncSession = Depends(get_session)
 ) -> loggedInUser:
+    """
+    FastAPI dependency that returns the currently authenticated user.
+
+    Reads the JWT from the `access_token` cookie, validates it, and loads the
+    matching user from the database. Add it to any route that requires login:
+    `user = Depends(get_current_user)`.
+
+    Args:
+        access_token: The JWT read from the `access_token` cookie (None if missing).
+        session: The database session for this request.
+
+    Returns:
+        loggedInUser: The user that owns the token (the SQLAlchemy `UserModel`).
+
+    Raises:
+        HTTPException 401: If the cookie is missing, the token is invalid or
+            expired, or the user id in the token no longer exists.
+    """
     if access_token is None:
         raise HTTPException(status_code=401, detail="Token Not Provided")
 

@@ -4,6 +4,7 @@ from app.main import app
 
 
 async def test_root_says_hello():
+    """Check that `GET /` responds 200 with `{"hello": "world"}` (API is alive)."""
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/")

@@ -4,6 +4,12 @@ from app.main import app
 
 
 async def test_login_works():
+    """
+    Placeholder login test.
+
+    Currently it only checks `GET /` (same as the health check). The real
+    login checks below are commented out.
+    """
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.get("/")

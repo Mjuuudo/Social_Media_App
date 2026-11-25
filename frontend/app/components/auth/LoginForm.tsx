@@ -4,21 +4,21 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import Logo from "./Logo";
 
-export type loginData = {
+export type LoginData = {
   // Username or email
   identifier: string;
   password: string;
 };
 
-type loginFormProps = {
-  onSubmit: (data: loginData) => void | Promise<void>;
+type LoginFormProps = {
+  onSubmit: (data: LoginData) => void | Promise<void>;
   isLoading?: boolean;
 };
 
 const inputClass =
   "h-14 w-full rounded-2xl bg-field px-5 text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-lilac";
 
-export default function loginForm({ onSubmit, isLoading = false }: loginFormProps) {
+export default function LoginForm({ onSubmit, isLoading = false }: LoginFormProps) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
@@ -86,7 +86,7 @@ export default function loginForm({ onSubmit, isLoading = false }: loginFormProp
           disabled={isLoading}
           className="h-14 w-full rounded-full bg-ink font-bold text-white transition hover:bg-ink/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isLoading ? "loging in..." : "Sign in"}
+          {isLoading ? "Signing in..." : "Sign in"}
         </button>
       </form>
 

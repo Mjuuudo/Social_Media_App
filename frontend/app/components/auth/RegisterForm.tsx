@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 // Mirrors the backend's RegisterRequest (backend/app/schemas/user.py).
 // Keys are snake_case so the object can be sent to the API as-is.
-export type registerData = {
+export type RegisterData = {
   username: string;
   first_name: string;
   last_name: string;
@@ -14,12 +14,10 @@ export type registerData = {
   password: string;
 };
 
-type registerFormProps = {
+type RegisterFormProps = {
   // Called with the typed values when the form is submitted.
   // The parent decides what happens (the API call is your logic).
-  onSubmit: (data: registerData) => void | Promise<void>;
-  // A message to show above the button, e.g. the backend's 409 text.
-  error?: string;
+  onSubmit: (data: RegisterData) => void | Promise<void>;
   // Disables the button while the request is running.
   isLoading?: boolean;
 };
@@ -30,7 +28,7 @@ const inputClass =
 const labelClass = "mb-2 block text-sm font-bold text-ink";
 const hintClass = "mt-1.5 text-xs text-muted";
 
-export default function registerForm({ onSubmit, error, isLoading = false }: registerFormProps) {
+export default function RegisterForm({ onSubmit, isLoading = false }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -152,12 +150,6 @@ export default function registerForm({ onSubmit, error, isLoading = false }: reg
           <p className={hintClass}>8 to 128 characters.</p>
         </div>
 
-        {error && (
-          <p role="alert" className="rounded-2xl bg-rose/25 px-4 py-3 text-sm font-semibold text-[#7a1f3d]">
-            {error}
-          </p>
-        )}
-
         <button
           type="submit"
           disabled={isLoading}
@@ -169,7 +161,7 @@ export default function registerForm({ onSubmit, error, isLoading = false }: reg
 
       <p className="mt-6 text-center text-sm text-muted">
         Already have an account?{" "}
-        <Link href="/login" className="font-bold text-link underline">
+        <Link href="/signin"className="font-bold text-link underline">
           Sign in
         </Link>
       </p>

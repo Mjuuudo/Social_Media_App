@@ -18,4 +18,13 @@ app.add_middleware(
 
 @app.get("/")
 async def helloWorld():
+    """
+    Health-check endpoint.
+
+    Used to quickly verify that the API is up and reachable
+    (also exercised by `tests/test_healthy.py`).
+
+    Returns:
+        dict: A static payload `{"hello": "world"}`.
+    """
     return {"hello": "world"}
