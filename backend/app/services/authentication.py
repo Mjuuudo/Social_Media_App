@@ -169,6 +169,14 @@ async def handle_refresh_token (
 
    return raw_token
 
+async def handle_stolen_token ( session: AsyncSession , token: str ) :
+    object_from_db = await get_refresh_token( session, token )
+
+    if not object_from_db :
+        return 
+    object_from_db.revoked_at = datetime.now(timezone.utc)
+
+
 
 async def handle_expired_refresh_token(
     session: AsyncSession,
@@ -197,6 +205,7 @@ async def handle_expired_refresh_token(
     if not object_from_db:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
     if object_from_db.revoked_at:
+        await handle_stolen_token ( session, refresh_token )
         raise HTTPException(status_code=401, detail="Invalid refresh token")
     if object_from_db.expires_at < datetime.now(timezone.utc):
         raise HTTPException(status_code=401, detail="Invalid refresh token")
