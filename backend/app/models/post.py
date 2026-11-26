@@ -13,7 +13,7 @@ class PostsModel(Base):
     caption:Mapped[str|None]=mapped_column(Text,nullable=True)
     created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),server_default=func.now())
     updated_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),server_default=func.now())
-    media= relationship("PostsMedia",back_populates="post",cascade="all,delete-orphan")
+    media= relationship("PostMedia",back_populates="post",cascade="all,delete-orphan")
     user=relationship("UserModel",back_populates="post")
 
 class PostMedia(Base):

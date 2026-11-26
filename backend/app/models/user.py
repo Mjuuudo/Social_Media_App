@@ -33,7 +33,7 @@ class UserModel(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
-    posts=relationship("PostsModel",back_populates="user",cascade="all,delete-orphan")
+    post=relationship("PostsModel",back_populates="user",cascade="all,delete-orphan")
         
 
 

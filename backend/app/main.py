@@ -3,7 +3,7 @@ from app.routes.authentication import router as user_router
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.users import router as users_profile_router
 from app.core.config import settings
-from app.routers import post
+from app.routes import post
 
 
 
