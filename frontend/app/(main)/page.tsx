@@ -63,11 +63,20 @@ function PostCard({ post, tint, showReactions }: { post: Post; tint: string; sho
       </p>
 
       {post.images.length > 0 && (
-        <div className="mt-5 grid h-[220px] grid-cols-[1fr_1.4fr] gap-2 sm:h-[270px] sm:grid-cols-[1fr_1fr_2.2fr]">
+        <div
+          className={`mt-5 grid h-[220px] gap-2 sm:h-[270px] ${
+            post.images.length === 1
+              ? "grid-cols-1"
+              : post.images.length === 2
+                ? "grid-cols-2"
+                : "grid-cols-[1fr_1.4fr] sm:grid-cols-[1fr_1fr_2.2fr]"
+          }`}
+        >
           {post.images.map((scene, i) => (
             <div
               key={scene}
-              className={`relative overflow-hidden rounded-3xl ${i === 0 ? "hidden sm:block" : ""}`}
+              // With 3 images, the first one is hidden on phones to keep the row readable
+              className={`relative overflow-hidden rounded-3xl ${post.images.length >= 3 && i === 0 ? "hidden sm:block" : ""}`}
             >
               <Scene name={scene} />
               {showReactions && i === post.images.length - 1 && <ReactionBar />}

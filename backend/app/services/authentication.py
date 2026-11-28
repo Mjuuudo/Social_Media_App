@@ -3,8 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timedelta, timezone
 from app.core.security import decode_access_token, hashPassword, verify_password, generate_refresh_token, hash_refresh_token, create_access_token
 from app.models.user import UserModel, RefreshTokenModel
-from app.repository.user import get_by_email, get_by_id, get_by_username, save_user, save_refresh_token, get_refresh_token
-from app.schemas.user import RegisterRequest, loginModel, UpdateProfileRequest, loggedInUser
+from app.repository.user import get_by_email, get_by_id, get_by_username, save_user, save_refresh_token, get_refresh_token, get_user_settings
+from app.schemas.user import RegisterRequest, loginModel, UserUpdateSettings, UpdateProfileRequest, loggedInUser, UserSettings
 import uuid
 
 async def register_client(data: RegisterRequest, session: AsyncSession):
@@ -136,14 +136,62 @@ async def update_user_data ( session: AsyncSession, data: UpdateProfileRequest, 
     """
     changed_data = data.model_dump(exclude_unset=True)
 
-    print (changed_data)
+    
     for key, value in changed_data.items() :
         setattr(user, key, value)
-    print (user)
+    
 
     await session.commit()
     await session.refresh(user)
     return user
+
+
+async def handle_update_user_settings ( data: UserUpdateSettings ,session: AsyncSession, user_id: uuid.UUID ) :
+    """
+    Apply a partial update to a user's notification settings
+    (used by `PATCH /api/auth/settings`).
+
+    Only the flags the client actually sent are changed
+    (`model_dump(exclude_unset=True)`). If nothing was sent, returns early
+    without touching the database.
+
+    Args:
+        data: The validated update payload.
+        session: The database session.
+        user_id: The id of the user whose settings are updated.
+
+    Returns:
+        UserSettings | None: The updated settings row, or None if the body was empty.
+    """
+    changed_data = data.model_dump(exclude_unset= True)
+
+    if not changed_data :
+        return 
+    settings = await get_user_settings(session, user_id)
+
+    for key, value in changed_data.items( ) :
+        setattr(settings, key, value)
+
+    await session.commit()
+    await session.refresh(settings)
+    return settings
+
+
+async def handle_user_settings( session:AsyncSession, user_id: uuid.UUID) -> UserSettings:
+    """
+    Load the notification settings of a user (used by `GET /api/auth/settings`).
+
+    Args:
+        session: The database session.
+        user_id: The id of the user whose settings are loaded.
+
+    Returns:
+        UserSettings | None: The settings row, or None if the user has none.
+    """
+    settings = await get_user_settings( session, user_id)
+
+    return settings
+
 
 async def handle_refresh_token ( 
         user_id: uuid.UUID,
@@ -170,11 +218,25 @@ async def handle_refresh_token (
    return raw_token
 
 async def handle_stolen_token ( session: AsyncSession , token: str ) :
+    """
+    React to a refresh token that is used again after it was already revoked.
+
+    A revoked token being sent again means it may have been stolen (refresh
+    tokens are single-use, see `handle_expired_refresh_token`). This marks the
+    token as revoked now and commits. Does nothing if the token is not found.
+
+    Args:
+        session: The database session.
+        token: The token to look up. `get_refresh_token` expects the hashed
+            value (see `hash_refresh_token`).
+    """
     object_from_db = await get_refresh_token( session, token )
 
     if not object_from_db :
         return 
     object_from_db.revoked_at = datetime.now(timezone.utc)
+    await session.commit ( )
+    await session.refresh( object_from_db )
 
 
 
@@ -236,6 +298,16 @@ async def handle_access_token_for_expired_refresh ( session: AsyncSession, refre
     return access_token
 
 async def handle_logout_refresh_token ( session: AsyncSession, refresh_token: str ) :
+    """
+    Revoke a refresh token in the database on logout (used by `POST /api/auth/logout`).
+
+    Hashes the raw token, finds its row and sets `revoked_at` to now, so the
+    token can no longer be used with `/refresh` even if someone kept a copy.
+
+    Args:
+        session: The database session.
+        refresh_token: The raw refresh token read from the client's cookie.
+    """
     token = await get_refresh_token( session, hash_refresh_token(refresh_token) )
     token.revoked_at = datetime.now(timezone.utc)
 

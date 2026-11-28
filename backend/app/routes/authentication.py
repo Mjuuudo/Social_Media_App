@@ -13,8 +13,10 @@ from app.schemas.user import (
     loginModel,
     loginResponse,
     UpdateProfileRequest,
+    UserSettings,
+    UserUpdateSettings,
 )
-from app.services.authentication import login_with_email, login_with_username, register_client, update_user_data, handle_refresh_token, handle_expired_refresh_token, handle_access_token_for_expired_refresh, handle_logout_refresh_token
+from app.services.authentication import login_with_email, handle_update_user_settings, login_with_username, register_client, update_user_data, handle_refresh_token, handle_expired_refresh_token, handle_user_settings, handle_logout_refresh_token
 
 router = APIRouter(tags=["Authentication"])
 
@@ -92,6 +94,21 @@ async def modifyAccount (
     """
     return await update_user_data(session, data, user)
 
+@router.patch("/settings", status_code = 204)
+async def modifySetting (
+    data: UserUpdateSettings,
+    user:  loggedInUser = Depends( get_current_user),
+    session: AsyncSession = Depends( get_session ) 
+) :
+    """
+    Update the logged-in user's notification settings (partial update).
+
+    Requires a valid `access_token` cookie. Only the flags included in the
+    body are changed. Returns 204 (no body) on success.
+    """
+    return await handle_update_user_settings( data, session, user.id)
+    
+
 
 @router.post("/refresh", status_code=204)
 async def refresh_access(
@@ -136,7 +153,7 @@ async def refresh_access(
 
 
 
-@router.get("/logout", status_code=200)
+@router.post("/logout", status_code=204)
 async def logout(
     response: Response,
     session: AsyncSession = Depends( get_session ),
@@ -144,8 +161,8 @@ async def logout(
     """
     Log the user out by deleting the `access_token` and `refresh_token` cookies.
 
-    Note: the refresh token is only removed from the browser; it is not
-    revoked in the database.
+    If a `refresh_token` cookie was sent, it is also revoked in the database
+    (`handle_logout_refresh_token`), so it can't be reused. Returns 204 (no body).
     """
     response.delete_cookie(key="access_token", httponly=True, samesite="lax", secure=False, path="/api/auth")
     if refresh_token :
@@ -170,3 +187,17 @@ async def list_me(user: loggedInUser = Depends(get_current_user)):
     Requires a valid `access_token` cookie, otherwise returns 401.
     """
     return user
+
+
+@router.get("/settings", status_code = 200) 
+async def user_settings (
+    session: AsyncSession = Depends( get_session),
+    user: loggedInUser = Depends(get_current_user)
+ ) -> UserSettings:
+    """
+    Return the notification settings of the currently logged-in user.
+
+    Requires a valid `access_token` cookie, otherwise returns 401.
+    """
+
+    return await handle_user_settings(session, user.id)

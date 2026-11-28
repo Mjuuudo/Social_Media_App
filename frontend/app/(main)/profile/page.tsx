@@ -6,27 +6,29 @@ import { Button, NotificationBell, Segmented, SectionTitle } from "../../compone
 import { me, people, profile, tints } from "../../lib/mock";
 import {useEffect , useState } from 'react';
 import {useRouter} from "next/navigation";
+import Link from "next/link";
+import { loadProfile, type User } from "../../lib/auth"
 
-const API_URL=process.env.NEXT_PUBLIC_API_URL ??"http://localhost:8000";
 
-type User = { id: number; username : string ; first_name : string ; last_name: string ; email: string; joined_at: string;}
 export default function ProfilePage() {
   const { person } = profile;
   const router=useRouter();
-  const [user,setUser]=useState("");
+  const [user,setUser]=useState<User | null>(null);
   const [loading,setLoading]=useState(true);
 
   useEffect(()=>{
     async function load() {
       try{
-        const response = await fetch(`${API_URL}/api/auth/me`,{credentials:"include",});
+        const response = await loadProfile( )
+      
         if(response.status===401){
+          
           router.replace("/login");
           return;
         }
         if(response.ok){
           const data = await response.json();
-          // console.log(data);
+          
           setUser(data)
 
         }
@@ -41,6 +43,21 @@ export default function ProfilePage() {
     }
     load();
   },[router])
+
+  // "About" rows built from the real user; fields the user hasn't filled in are skipped.
+  const about = [
+    user?.location && { icon: "pin", text: `Lives in ${user.location}` },
+    user?.job_title && { icon: "briefcase", text: user.job_title },
+    user?.created_at && {
+      icon: "calendar",
+      text: `Joined ${new Date(user.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`,
+    },
+  ].filter(Boolean) as { icon: "pin" | "briefcase" | "calendar"; text: string }[];
+
+
+
+
+
   return (
       
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px]">
@@ -83,10 +100,18 @@ export default function ProfilePage() {
           <div className="flex gap-3">
             <Button className="px-8">Follow</Button>
             <Button variant="outline" className="px-8">Message</Button>
+            <Link
+              href="/settings"
+              aria-label="Settings"
+              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full border border-ink bg-transparent px-6 text-sm font-bold text-ink transition hover:bg-ink/5"
+            >
+              <Icon name="settings" className="h-[18px] w-[18px]" />
+              Settings
+            </Link>
           </div>
         </div>
 
-        <p className="mt-6 max-w-2xl leading-relaxed text-ink">{profile.bio}</p>
+        <p className="mt-6 max-w-2xl leading-relaxed text-ink">{`${user?.bio ?? "User Dosent Have A Bio Yet"}`}</p>
 
         <dl className="mt-6 grid grid-cols-3 gap-3 sm:gap-4">
           {profile.stats.map((s, i) => (
@@ -112,7 +137,7 @@ export default function ProfilePage() {
         <section className="rounded-[32px] bg-cream p-6">
           <SectionTitle>About</SectionTitle>
           <ul className="mt-4 space-y-3 text-sm text-ink">
-            {profile.about.map((a) => (
+            {about.map((a) => (
               <li key={a.text} className="flex items-center gap-3">
                 <Icon name={a.icon} className="h-[18px] w-[18px]" /> {a.text}
               </li>

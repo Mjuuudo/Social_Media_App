@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import AuthShell from "../components/auth/AuthShell";
 import RegisterForm, { type RegisterData } from "../components/auth/RegisterForm";
+import { Register } from "../lib/auth"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+
+
+
 
 // 409 → { detail: "..." }; 422 → { detail: [{ loc, msg }, ...] }
 function readDetail(body: unknown): string | null {
@@ -29,11 +32,7 @@ export default function RegisterPage() {
   async function handleRegister(data: RegisterData) {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await Register( data );
 
       if (response.status === 201) {
         toast.success("Account created, you can sign in now");

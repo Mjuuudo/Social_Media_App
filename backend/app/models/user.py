@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, String, Text, false, func, ForeignKey
+from sqlalchemy import DateTime, String, Text, false, func, ForeignKey, true
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -65,3 +65,26 @@ class RefreshTokenModel ( Base ) :
     expires_at:Mapped[datetime] = mapped_column(DateTime(timezone = True))
     revoked_at:Mapped[datetime | None] = mapped_column(DateTime( timezone = True))
     created_at:Mapped[datetime] = mapped_column(DateTime( timezone = True ), server_default=func.now())
+
+
+class UserSettings ( Base ) :
+    """
+    ORM model for the `user_settings` table: one row of notification
+    preferences per user.
+
+    `user_id` is both the primary key and a foreign key to `users.id`, so a
+    user can have at most one settings row, and it is deleted automatically
+    with the user (`ondelete="CASCADE"`). The row is created at registration
+    (see `save_user`), and every preference defaults to `true` in the database.
+    """
+
+    __tablename__ = "user_settings"
+
+    user_id:Mapped[uuid.UUID] = mapped_column( ForeignKey(
+        "users.id", ondelete="CASCADE"
+    ), primary_key=True)
+    notify_reactions:Mapped[bool] = mapped_column( server_default = true())
+    notify_comments:Mapped[bool] = mapped_column( server_default =  true())
+    notify_follows:Mapped[bool] = mapped_column( server_default =  true())
+    notify_messages:Mapped[bool] = mapped_column( server_default =  true())
+    weekly_digest:Mapped[bool] = mapped_column( server_default =  true())

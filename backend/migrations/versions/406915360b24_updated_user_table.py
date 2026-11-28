@@ -52,6 +52,8 @@ def upgrade() -> None:
         sa.UniqueConstraint("email"),
         sa.UniqueConstraint("username"),
     )
+
+   
     # ### end Alembic commands ###
 
 

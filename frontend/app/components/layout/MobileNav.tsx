@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Icon, { type IconName } from "../ui/Icon";
+import LogoutButton from "./LogoutButton";
 
 const items: { href: string; label: string; icon: IconName; dot?: boolean }[] = [
   { href: "/", label: "News Feed", icon: "compass" },
@@ -37,6 +38,7 @@ export default function MobileNav() {
       {items.slice(2).map((item) => (
         <NavLink key={item.href} {...item} active={isActive(item.href)} />
       ))}
+      <LogoutButton compact className="grid h-14 w-14 place-items-center rounded-full text-white" />
     </nav>
   );
 }

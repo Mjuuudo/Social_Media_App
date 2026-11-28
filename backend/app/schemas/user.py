@@ -178,3 +178,35 @@ class loggedInUser(BaseModel):
     created_at: datetime
     updated_at: datetime
     last_seen_at: datetime | None
+
+class UserSettings ( BaseModel ) :
+    """
+    Notification preferences returned by `GET /api/auth/settings`.
+
+    Mirrors the `user_settings` table. Each flag turns one kind of
+    notification on (`True`) or off (`False`).
+    """
+
+    user_id: uuid.UUID
+    notify_reactions: bool
+    notify_comments: bool
+    notify_follows: bool
+    notify_messages: bool
+    weekly_digest: bool
+
+
+class UserUpdateSettings ( BaseModel ) :
+    """
+    Request body for `PATCH /api/auth/settings` (partial settings update).
+
+    Every field is optional: only the flags actually sent by the client are
+    applied (see `handle_update_user_settings`, which uses `exclude_unset=True`).
+    The `= None` defaults are what make the fields optional; without them
+    Pydantic would require every flag in every request.
+    """
+
+    notify_reactions: bool | None = None
+    notify_comments: bool | None = None
+    notify_follows: bool | None = None
+    notify_messages: bool | None = None
+    weekly_digest: bool | None = None

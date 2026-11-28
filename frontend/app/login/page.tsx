@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import AuthShell from "../components/auth/AuthShell";
 import LoginForm, { type LoginData } from "../components/auth/LoginForm";
+import { Login } from "../lib/auth"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -21,13 +22,10 @@ export default function LoginPage() {
   async function handleLogin(data: LoginData) {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // Required so the browser stores the httpOnly cookie the backend sets
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
+      // TODO: replace this fetch with apiFetch("/api/auth/login", { ... }) from "@/app/lib/api"
+      //       (apiFetch adds API_URL and credentials: "include"); the local API_URL constant can then be removed.
+
+      const response = await Login ( data );
 
       if (response.ok) {
         router.push("/");
